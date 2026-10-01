@@ -14,6 +14,9 @@ export default function SplashScreen() {
     const timer = setTimeout(async () => {
       const completed = await hasCompletedOnboarding();
 
+      console.log("Onboarding:", completed);
+      console.log("User:", user);
+
       if (!completed) {
         router.replace("/(auth)/onboarding");
         return;

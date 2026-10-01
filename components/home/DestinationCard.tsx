@@ -20,10 +20,12 @@ type Props = {
   };
 };
 
-export default function DestinationCard({ item }: Props) {
+export default function DestinationCard({
+  item,
+}: Props) {
   const handlePress = () => {
     router.push({
-      pathname: "/destination/[id]" as any,
+      pathname: "/popular-destination/[id]",
       params: {
         id: item.id,
       },
@@ -41,11 +43,17 @@ export default function DestinationCard({ item }: Props) {
       />
 
       <View style={styles.content}>
-        <Text style={styles.name}>
+        <Text
+          style={styles.name}
+          numberOfLines={1}
+        >
           {item.name}
         </Text>
 
-        <Text style={styles.country}>
+        <Text
+          style={styles.country}
+          numberOfLines={1}
+        >
           {item.country}
         </Text>
 

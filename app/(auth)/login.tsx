@@ -15,6 +15,7 @@ import GoogleButton from "../../components/auth/GoogleButton";
 import PrimaryButton from "../../components/auth/PrimaryButton";
 
 import { login } from "../../firebase/auth";
+import { auth } from "../../firebase/config";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -22,20 +23,28 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     console.log("Login button pressed");
-    
+
     if (!email || !password) {
       Alert.alert("Error", "Please enter email and password.");
       return;
     }
 
     try {
-      console.log("Calling Firebase");
-      await login(email, password);
-      console.log("Firebase Success");
+      console.log("Calling Firebase...");
+
+      const userCredential = await login(email, password);
+
+      console.log("LOGIN SUCCESS");
+      console.log("LOGIN USER:", userCredential.user);
+      console.log("UID:", userCredential.user.uid);
+      console.log("EMAIL:", userCredential.user.email);
+      console.log("AUTH CURRENT USER:", auth.currentUser);
+
       router.replace("/(tabs)");
-    
+
     } catch (error: any) {
-      console.log(error);
+      console.log("LOGIN ERROR:", error);
+
       Alert.alert(
         "Login Failed",
         error.message
@@ -55,18 +64,16 @@ export default function LoginScreen() {
           subtitle="Login to continue planning your trips"
         />
 
-       <CustomInput
-  label="Email Address"
-  icon="mail-outline"
-  placeholder="Enter your email"
-  value={email}
-  onChangeText={(text) => {
-    console.log("Typing:", text);
-    setEmail(text);
-  }}
-  keyboardType="email-address"
-  autoCapitalize="none"
-/>
+        <CustomInput
+          label="Email Address"
+          icon="mail-outline"
+          placeholder="Enter your email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+
         <CustomInput
           label="Password"
           icon="lock-closed-outline"
